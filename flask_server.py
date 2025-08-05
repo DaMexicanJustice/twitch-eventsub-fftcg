@@ -5,6 +5,7 @@ import json
 from dotenv import load_dotenv
 import os
 import create_img  # Assuming this contains your bot logic
+import get_user_data
 
 load_dotenv()
 TWITCH_SECRET = os.getenv('my_secret')
@@ -44,9 +45,10 @@ def webhook():
     if payload['subscription']['type'] == 'channel.channel_points_custom_reward_redemption.add':
         event = payload['event']
         user = event['user_name']
+        user_id = payload['event']['user_id']
         reward = event['reward']['title']
         print(f"✅ {user} redeemed: {reward}")
-        create_img.generate_card(event["profile_image_url"], user)
+        create_img.generate_card(get_user_data.get_profile_image(user_id, os.getenv('access_token') ,os.getenv('client_id')))
 
     return '', 204
 
