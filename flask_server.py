@@ -44,20 +44,20 @@ def webhook():
     # Actual event
     if payload['subscription']['type'] == 'channel.channel_points_custom_reward_redemption.add':
         event = payload['event']
-        user = event['user_name']
+        username = event['user_name']
         user_id = payload['event']['user_id']
         reward = event['reward']['title']
-        print(f"✅ {user} redeemed: {reward}")
-        generate_user_card(user_id)
+        print(f"✅ {username} redeemed: {reward}")
+        generate_user_card(user_id, username)
 
     return '', 204
 
-def generate_user_card(user_id):
+def generate_user_card(user_id, username):
     print(f"Generating card for user ID: {user_id}")
     access_token = os.getenv("access_token")
     client_id = os.getenv("client_id")
     profile_image_url = get_user_data.get_profile_image(user_id, access_token, client_id)
-    return create_img.generate_card(profile_image_url)
+    return create_img.generate_card(profile_image_url, username)
 
 if __name__ == '__main__':
     import payload  # auto-register when deployed
