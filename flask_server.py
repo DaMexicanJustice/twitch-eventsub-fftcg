@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, Response
+from flask import Flask, request, jsonify, Response, send_file
 import hmac
 import hashlib
 import json
@@ -11,6 +11,10 @@ load_dotenv()
 TWITCH_SECRET = os.getenv('my_secret')
 
 app = Flask(__name__)
+
+@app.route("/card")
+def serve_card():
+    return send_file("static/card.png", mimetype="image/png")
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
