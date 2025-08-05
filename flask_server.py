@@ -11,11 +11,6 @@ TWITCH_SECRET = os.getenv('my_secret')
 
 app = Flask(__name__)
 
-# Map Twitch rewards to Materia categories
-reward_to_category = {
-    "Redeem Become a Final Fantasy card": "Card",
-}
-
 @app.route('/webhook', methods=['POST'])
 def webhook():
     print("reached")
@@ -56,5 +51,6 @@ def webhook():
     return '', 204
 
 if __name__ == '__main__':
+    import payload  # auto-register when deployed
     # Then start Flask
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
