@@ -46,7 +46,7 @@ def webhook():
         user = event['user_name']
         reward = event['reward']['title']
         print(f"✅ {user} redeemed: {reward}")
-        create_img.generate_card(user["profile_image_url"], user["display_name"])
+        create_img.generate_card(event["profile_image_url"], user)
 
     return '', 204
 
