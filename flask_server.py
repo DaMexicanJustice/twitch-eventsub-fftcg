@@ -48,9 +48,16 @@ def webhook():
         user_id = payload['event']['user_id']
         reward = event['reward']['title']
         print(f"✅ {user} redeemed: {reward}")
-        create_img.generate_card(get_user_data.get_profile_image(user_id, os.getenv('access_token') ,os.getenv('client_id')))
+        generate_user_card(user_id)
 
     return '', 204
+
+def generate_user_card(user_id):
+    print(f"Generating card for user ID: {user_id}")
+    access_token = os.getenv("access_token")
+    client_id = os.getenv("client_id")
+    profile_image_url = get_user_data.get_profile_image(user_id, access_token, client_id)
+    return create_img.generate_card(profile_image_url)
 
 if __name__ == '__main__':
     import payload  # auto-register when deployed
