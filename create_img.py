@@ -12,7 +12,7 @@ fftcg_costs = [
 ]
 
 # List of elements
-elements = ["wind", "earth", "lightning", "fire", "ice", "water"]
+elements = ["Wind", "Earth", "Lightning", "Fire", "Ice", "Water", "Light", "Dark"]
 
 # List of jobs
 fftcg_jobs = [
