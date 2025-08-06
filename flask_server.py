@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 import create_img  # Assuming this contains your bot logic
 import get_user_data
+import img_from_url
 
 load_dotenv()
 TWITCH_SECRET = os.getenv('my_secret')
@@ -61,7 +62,8 @@ def generate_user_card(user_id, username):
     access_token = os.getenv("access_token")
     client_id = os.getenv("client_id")
     profile_image_url = get_user_data.get_profile_image(user_id, access_token, client_id)
-    return create_img.generate_card(profile_image_url, username)
+    profile_image = img_from_url.fetch_image_from_url(profile_image_url) #image object
+    return create_img.generate_card(profile_image, username)
 
 if __name__ == '__main__':
     import payload  # auto-register when deployed

@@ -181,14 +181,13 @@ monster_abilities = [
 ]
 
 
-def generate_card(background_image_path, twitch_username, output_path="static/card.png"):
+def generate_card(background_image, twitch_username, output_path="static/card.png"):
 
     # Randomly select frame and attributes
     selected = random.choice(elements)
     filename = f"{selected}.png"
     frame = Image.open(f"frames/{filename}").convert("RGBA")
-    background = Image.open(background_image_path).convert("RGBA").resize(frame.size)
-
+    
     # Create drawing context
     draw = ImageDraw.Draw(frame)
 
@@ -224,7 +223,7 @@ def generate_card(background_image_path, twitch_username, output_path="static/ca
     draw.text((25, 800), flavor_text, font=small, fill="white", stroke_fill="black", stroke_width=2)
 
     # Composite and save
-    combined = Image.alpha_composite(background, frame)
+    combined = Image.alpha_composite(background_image, frame)
     combined.save(output_path)
 
     return output_path
