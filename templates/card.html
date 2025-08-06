@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Card Display</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        window.onload = function () {
+            const img = document.getElementById("card-img");
+            const timestamp = new Date().getTime();
+            img.src = "/static/card.png?v=" + timestamp;
+
+            // Hide the image after 5 seconds
+            setTimeout(function () {
+                img.style.display = "none";
+            }, 5000);
+        };
+    </script>
+</head>
+
+<body>
+    <div id="card-container">
+        <img id="card-img" alt="Card Image">
+    </div>
+</body>
+
+</html>

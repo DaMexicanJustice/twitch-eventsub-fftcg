@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, Response, send_file
+from flask import Flask, request, jsonify, Response, send_file, render_template
 import hmac
 import hashlib
 import json
@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 import create_img  # Assuming this contains your bot logic
 import get_user_data
+import time
 
 load_dotenv()
 TWITCH_SECRET = os.getenv('my_secret')
@@ -14,7 +15,7 @@ app = Flask(__name__)
 
 @app.route("/card")
 def serve_card():
-    return send_file("static/card.png", mimetype="image/png")
+    return render_template("card.html", time=int(time.time()))
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
