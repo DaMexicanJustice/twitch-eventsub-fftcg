@@ -1,6 +1,8 @@
 from PIL import Image, ImageDraw, ImageFont
 import random
 import textwrap
+import img_from_url
+
 
 
 # Load the background image (your custom backdrop)
@@ -181,13 +183,14 @@ monster_abilities = [
 ]
 
 
-def generate_card(background_image, twitch_username, output_path="static/card.png"):
+def generate_card(background_image_url, twitch_username, output_path="static/card.png"):
 
     # Randomly select frame and attributes
     selected = random.choice(elements)
     filename = f"{selected}.png"
     frame = Image.open(f"frames/{filename}").convert("RGBA")
-    
+    background_image = img_from_url.fetch_image_from_url(background_image_url, frame.size) #image object
+
     # Create drawing context
     draw = ImageDraw.Draw(frame)
 
