@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 @app.route("/card")
 def serve_card():
-    return render_template("card.html", time=int(time.time()))
+    return send_file("card.png", mimetype="image/png")
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
