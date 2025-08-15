@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Display</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        .card-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 1000;
+        }
+
+        .card-container.show {
+            opacity: 1;
+        }
+
+        .card-image {
+            max-width: 100vw;
+            max-height: 100vh;
+            display: block;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card-container" id="cardContainer">
+        <img class="card-image" id="cardImage" src="" alt="Generated Card">
+    </div>
+
+    <script>
+        let displayTimeout;
+        let lastCheckTime = 0;
+
+        function showCard() {
+            const container = document.getElementById('cardContainer');
+            const image = document.getElementById('cardImage');
+
+            // Add timestamp to prevent caching
+            const timestamp = Date.now();
+            image.src = `/card/${timestamp}`;
+
+            // Show the card
+            container.classList.add('show');
+
+            // Hide after 6 seconds
+            displayTimeout = setTimeout(() => {
+                container.classList.remove('show');
+            }, 6000);
+        }
+
+        function checkForNewCard() {
+            // Check if card.png has been modified recently
+            fetch('/card-check')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.hasNewCard && data.lastModified > lastCheckTime) {
+                        lastCheckTime = data.lastModified;
+                        showCard();
+                    }
+                })
+                .catch(error => console.error('Error checking for new card:', error));
+        }
+
+        // Check for new cards every 2 seconds
+        setInterval(checkForNewCard, 2000);
+
+        // Initial check
+        checkForNewCard();
+    </script>
+</body>
+
+</html>

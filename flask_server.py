@@ -18,7 +18,43 @@ def serve_card():
     card_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "card.png")
     if not os.path.exists(card_path):
         return "Card image not found.", 404
-    return send_file(card_path, mimetype="image/png")
+    # Add cache-busting headers
+    response = send_file(card_path, mimetype="image/png")
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
+@app.route("/card/<timestamp>")
+def serve_card_with_timestamp(timestamp):
+    card_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "card.png")
+    if not os.path.exists(card_path):
+        return "Card image not found.", 404
+    # Add cache-busting headers
+    response = send_file(card_path, mimetype="image/png")
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
+@app.route("/card-display")
+def card_display():
+    return render_template("card_display.html")
+
+@app.route("/card-check")
+def card_check():
+    card_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "card.png")
+    if os.path.exists(card_path):
+        last_modified = os.path.getmtime(card_path)
+        return jsonify({
+            "hasNewCard": True,
+            "lastModified": last_modified
+        })
+    else:
+        return jsonify({
+            "hasNewCard": False,
+            "lastModified": 0
+        })
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
