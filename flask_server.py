@@ -15,7 +15,10 @@ app = Flask(__name__)
 
 @app.route("/card")
 def serve_card():
-    return send_file("card.png", mimetype="image/png")
+    card_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "card.png")
+    if not os.path.exists(card_path):
+        return "Card image not found.", 404
+    return send_file(card_path, mimetype="image/png")
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
